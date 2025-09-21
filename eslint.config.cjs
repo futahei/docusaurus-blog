@@ -1,26 +1,24 @@
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import eslintConfigPrettier from "eslint-config-prettier";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import unusedImports from "eslint-plugin-unused-imports";
+const tsParser = require("@typescript-eslint/parser");
+const tsPlugin = require("@typescript-eslint/eslint-plugin");
+const unusedImports = require("eslint-plugin-unused-imports");
+const simpleImportSort = require("eslint-plugin-simple-import-sort");
+const eslintConfigPrettier = require("eslint-config-prettier");
 
-export default [
-  // 共通（JS/TS）設定
+module.exports = [
   {
     ignores: [
       "**/node_modules/**",
-      "**/build/**", // Docusaurus の出力
-      "**/.docusaurus/**", // Docusaurus の中間生成物
+      "**/build/**",
+      "**/.docusaurus/**",
       "**/dist/**",
       "**/coverage/**",
     ],
+  },
+  {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       parser: tsParser,
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-      },
+      parserOptions: { ecmaVersion: "latest", sourceType: "module" },
     },
     plugins: {
       "@typescript-eslint": tsPlugin,
@@ -28,7 +26,6 @@ export default [
       "simple-import-sort": simpleImportSort,
     },
     rules: {
-      // --- 未使用importの自動削除 ---
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "error",
@@ -42,8 +39,6 @@ export default [
           ignoreRestSiblings: true,
         },
       ],
-
-      // --- import順の自動整列（グルーピング含む）---
       "simple-import-sort/imports": [
         "warn",
         {
@@ -66,7 +61,5 @@ export default [
       "simple-import-sort/exports": "warn",
     },
   },
-
-  // Prettier互換（フォーマット系のESLintルールを無効化）
   eslintConfigPrettier,
 ];
