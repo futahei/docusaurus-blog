@@ -1,0 +1,23 @@
+name: Lighthouse CI
+on:
+  schedule:
+    - cron: "0 18 * * 1" # 毎週月曜 03:00 JST
+  workflow_dispatch:
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: "npm" }
+      - run: npm ci
+      - run: npm run build
+      - run: npx http-server build -p 8080 & sleep 3
+      - uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:8080/
+            http://localhost:8080/blog
+          uploadArtifacts: true
+          configPath: ./lighthouserc.json
