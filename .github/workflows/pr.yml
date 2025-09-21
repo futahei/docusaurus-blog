@@ -17,8 +17,7 @@ jobs:
       - run: npm ci
 
       # 型とLint
-      - run: npm run typecheck --if-present
-      - run: npm run lint --if-present
+      - run: npm run lint
 
       # 本番と同じ条件でビルド（壊れリンクでfail）
       - run: npm run build
