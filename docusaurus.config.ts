@@ -4,8 +4,8 @@ import type { Config } from "@docusaurus/types";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "My Blog",
-  tagline: "Dinosaurs are cool",
+  title: "Futahei Blog",
+  tagline: "技術ブログ",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -50,6 +50,15 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  // カスタムフィールド
+  customFields: {
+    socials: [
+      { label: "GitHub", href: "https://github.com/futahei" },
+      { label: "X", href: "https://x.com/kohei_fttk" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/futahei/" },
+    ],
+  },
 };
 
 export default config;

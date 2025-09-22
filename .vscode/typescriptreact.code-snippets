@@ -1,0 +1,39 @@
+{
+  "Component Define Template": {
+    "scope": "typescriptreact",
+    "prefix": "nsc",
+    "body": [
+      "import React from \"react\";",
+      "",
+      "export namespace $1 {",
+      "    /**",
+      "     * {@link $1} コンポーネントのプロパティ定義",
+      "     */",
+      "    export interface Props {",
+      "        $3",
+      "    }",
+      "}",
+      "",
+      "/**",
+      " * $2",
+      " *",
+      " * @param props プロパティ",
+      " * @returns 描画内容",
+      " */",
+      "export function $1({}: $1.Props): JSX.Element {",
+      "    return <></>;",
+      "}"
+    ],
+    "description": "コンポーネント定義テンプレート"
+  },
+  "helperBox": {
+    "prefix": "helperBox",
+    "body": [
+      "//------------------------------------------------------------------------------",
+      "// Helpers",
+      "//------------------------------------------------------------------------------",
+      "$1"
+    ],
+    "description": "A comment box of helpers"
+  }
+}
