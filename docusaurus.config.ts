@@ -4,8 +4,8 @@ import type { Config } from "@docusaurus/types";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "My Blog",
-  tagline: "Dinosaurs are cool",
+  title: "Futahei Blog",
+  tagline: "技術ブログ",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
