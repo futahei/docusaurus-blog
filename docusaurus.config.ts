@@ -50,6 +50,15 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  // カスタムフィールド
+  customFields: {
+    socials: [
+      { label: "GitHub", href: "https://github.com/futahei" },
+      { label: "X", href: "https://x.com/kohei_fttk" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/futahei/" },
+    ],
+  },
 };
 
 export default config;

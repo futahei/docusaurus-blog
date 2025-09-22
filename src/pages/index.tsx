@@ -1,10 +1,11 @@
 import React from "react";
 
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Socials from "@site/src/components/home/Socials";
-import siteConfig from "@site/src/siteConfig";
 import Layout from "@theme/Layout";
 
 export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout title="TOP" description="技術ブログ">
       <main
@@ -25,8 +26,7 @@ export default function Home() {
           >
             {siteConfig.title}
           </h1>
-
-          <Socials items={siteConfig.socials} />
+          <Socials />
         </div>
       </main>
     </Layout>

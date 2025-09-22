@@ -1,6 +1,8 @@
 import React from "react";
 import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
 
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+
 import styles from "./Socials.module.css";
 
 type Social = {
@@ -9,7 +11,6 @@ type Social = {
 };
 
 type Props = {
-  items: Social[];
   size?: number; // 直径(px)
 };
 
@@ -19,10 +20,12 @@ const IconForLabel: Record<string, React.ReactNode> = {
   X: <SiX size={20} />,
 };
 
-export default function Socials({ items, size = 40 }: Props) {
+export default function Socials({ size = 40 }: Props) {
+  const { siteConfig } = useDocusaurusContext();
+  const socials = siteConfig.customFields.socials as Social[];
   return (
     <div className={styles.wrap} role="navigation" aria-label="Social links">
-      {items.map((s) => (
+      {socials.map((s) => (
         <a
           key={s.label}
           href={s.href}
