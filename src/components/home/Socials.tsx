@@ -1,20 +1,18 @@
-import React from "react";
+import React, { JSX } from "react";
 import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
 
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 import styles from "./Socials.module.css";
 
-type SocialType = "GitHub" | "X" | "LinkedIn";
-
-type Social = {
-  label: SocialType;
-  href: string;
-};
-
-type Props = {
-  size?: number; // 直径(px)
-};
+export namespace Socials {
+  /**
+   * {@link Socials} コンポーネントのプロパティ定義
+   */
+  export interface Props {
+    size?: number; // 直径
+  }
+}
 
 const IconForLabel: Record<SocialType, React.ReactNode> = {
   GitHub: <SiGithub size={20} />,
@@ -22,9 +20,16 @@ const IconForLabel: Record<SocialType, React.ReactNode> = {
   X: <SiX size={20} />,
 };
 
-export default function Socials({ size = 40 }: Props) {
+/**
+ * ソーシャルリンク一覧を表示するコンポーネント
+ *
+ * @param props プロパティ
+ * @returns 描画内容
+ */
+export function Socials({ size = 40 }: Socials.Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
-  const socials = siteConfig.customFields.socials as Social[];
+  const socials = getSocials(siteConfig.customFields?.socials);
+
   return (
     <div className={styles.wrap} role="navigation" aria-label="Social links">
       {socials.map((s) => (
@@ -43,3 +48,31 @@ export default function Socials({ size = 40 }: Props) {
     </div>
   );
 }
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
+
+type SocialType = "GitHub" | "X" | "LinkedIn";
+
+type Social = {
+  label: SocialType;
+  href: string;
+};
+
+const SOCIAL_LABELS: ReadonlyArray<SocialType> = ["GitHub", "X", "LinkedIn"];
+
+const isSocialLabel = (value: unknown): value is SocialType =>
+  typeof value === "string" && SOCIAL_LABELS.some((label) => label === value);
+
+const isSocial = (value: unknown): value is Social => {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const { label, href } = value as { label?: unknown; href?: unknown };
+  return isSocialLabel(label) && typeof href === "string";
+};
+
+const getSocials = (value: unknown): Social[] =>
+  Array.isArray(value) ? value.filter(isSocial) : [];

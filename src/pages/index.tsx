@@ -1,7 +1,7 @@
 import React from "react";
 
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Socials from "@site/src/components/home/Socials";
+import { Socials } from "@site/src/components/home/Socials";
 import Layout from "@theme/Layout";
 
 export default function Home() {
