@@ -5,8 +5,10 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 import styles from "./Socials.module.css";
 
+type SocialType = "GitHub" | "X" | "LinkedIn";
+
 type Social = {
-  label: string;
+  label: SocialType;
   href: string;
 };
 
@@ -14,7 +16,7 @@ type Props = {
   size?: number; // 直径(px)
 };
 
-const IconForLabel: Record<string, React.ReactNode> = {
+const IconForLabel: Record<SocialType, React.ReactNode> = {
   GitHub: <SiGithub size={20} />,
   LinkedIn: <SiLinkedin size={20} />,
   X: <SiX size={20} />,
