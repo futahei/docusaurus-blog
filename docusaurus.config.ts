@@ -1,8 +1,6 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const repo = "docusaurus-blog";
 const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
@@ -13,23 +11,16 @@ const config: Config = {
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // Set the production url of your site here
   url: "https://futahei.github.io",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: isVercelPreview ? "/" : `/${repo}/`,
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "futahei", // Usually your GitHub org/user name.
-  projectName: "docusaurus-blog", // Usually your repo name.
+  organizationName: "futahei",
+  projectName: "docusaurus-blog",
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // 言語切替を無効 → locales を 1 言語のみに
   i18n: {
     defaultLocale: "ja",
     locales: ["ja"],
@@ -39,12 +30,20 @@ const config: Config = {
     [
       "classic",
       {
-        docs: false,
+        docs: {
+          path: "docs",
+          routeBasePath: "docs", // ドキュメント機能
+          sidebarPath: require.resolve("./sidebars.js"),
+        },
         blog: {
+          path: "blog",
+          routeBasePath: "blog",
           showReadingTime: true,
+          postsPerPage: 10,
+          tagsBasePath: "tags",
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: require.resolve("./src/css/custom.css"),
         },
         sitemap: {
           changefreq: "weekly",
@@ -54,7 +53,44 @@ const config: Config = {
     ],
   ],
 
-  // カスタムフィールド
+  themeConfig: {
+    navbar: {
+      title: "Futahei Blog",
+      items: [
+        { to: "/docs/intro", label: "Docs", position: "left" },
+        { to: "/blog", label: "Blog", position: "left" },
+        {
+          type: "search",
+          position: "right",
+        },
+      ],
+    },
+    footer: {
+      style: "dark",
+      links: [
+        {
+          title: "More",
+          items: [
+            {
+              label: "Blog",
+              to: "/blog",
+            },
+          ],
+        },
+      ],
+      copyright: `© ${new Date().getFullYear()} Futahei`,
+    },
+    colorMode: {
+      defaultMode: "light",
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    prism: {
+      theme: require("prism-react-renderer").themes.github,
+      darkTheme: require("prism-react-renderer").themes.dracula,
+    },
+  },
+
   customFields: {
     socials: [
       { label: "GitHub", href: "https://github.com/futahei" },

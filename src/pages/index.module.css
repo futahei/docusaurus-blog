@@ -1,4 +1,126 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+.heroBanner {
+  padding: 4rem 0 2rem;
+  text-align: center;
+}
+
+.heroInner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.heroSubtitle {
+  margin: 1rem 0 2rem;
+  font-size: 1.1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.socials {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  background: var(--ifm-background-color);
+}
+
+.recentSection {
+  padding: 3rem 0;
+  background: var(--ifm-color-emphasis-50);
+}
+
+.recentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.posts {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: stretch;
+}
+
+.postCard {
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--ifm-global-shadow-lw);
+  display: flex;
+  flex-direction: column;
+}
+
+.postTitle {
+  margin-bottom: 0.75rem;
+  font-size: 1.35rem;
+}
+
+.postDescription {
+  margin-bottom: 1rem;
+  color: var(--ifm-font-color-secondary);
+  flex-grow: 1;
+}
+
+.postMeta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.postAuthor {
+  font-weight: 600;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  background: var(--ifm-breadcrumb-item-background-active);
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.readMore {
+  margin-top: auto;
+  font-weight: 600;
+}
+
+.readMore a {
+  text-decoration: none;
+}
+
+.readMore a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .heroBanner {
+    padding: 3rem 0 1.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+}
