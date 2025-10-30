@@ -1,34 +1,28 @@
 import React from "react";
 
+import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { Socials } from "@site/src/components/home/Socials";
 import Layout from "@theme/Layout";
 
-export default function Home() {
+const Home: React.FC = () => {
   const { siteConfig } = useDocusaurusContext();
+  const { title, tagline } = siteConfig;
+
   return (
-    <Layout title="TOP" description="技術ブログ">
+    <Layout title={title} description={tagline as string}>
       <main
-        style={{
-          display: "grid",
-          placeItems: "center",
-          minHeight: "60vh",
-          padding: "4rem 1rem",
-        }}
+        style={{ padding: "4rem 1rem", textAlign: "center", minHeight: "60vh" }}
       >
-        <div style={{ textAlign: "center" }}>
-          <h1
-            style={{
-              fontSize: "2.25rem",
-              lineHeight: 1.2,
-              marginBottom: "1.5rem",
-            }}
-          >
-            {siteConfig.title}
-          </h1>
-          <Socials />
-        </div>
+        <h1 style={{ fontSize: "2.5rem", marginBottom: "1.5rem" }}>{title}</h1>
+        {tagline && (
+          <p style={{ fontSize: "1.25rem", marginBottom: "2rem" }}>{tagline}</p>
+        )}
+        <Link className="button button--primary button--lg" to="/blog">
+          記事を読む
+        </Link>
       </main>
     </Layout>
   );
-}
+};
+
+export default Home;
