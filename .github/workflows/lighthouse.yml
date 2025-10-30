@@ -10,14 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: "npm" }
+        with:
+          node-version: 20
+          cache: "npm"
       - run: npm ci
       - run: npm run build
-      - run: npx http-server build -p 8080 & sleep 3
       - uses: treosh/lighthouse-ci-action@v11
         with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          staticDistDir: ./build
           urls: |
             http://localhost:8080/
-            http://localhost:8080/blog
-          uploadArtifacts: true
-          configPath: ./lighthouserc.json
