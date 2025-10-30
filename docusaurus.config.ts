@@ -3,6 +3,9 @@ import type { Config } from "@docusaurus/types";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const repo = "docusaurus-blog";
+const isVercelPreview = process.env.VERCEL_ENV === "preview";
+
 const config: Config = {
   title: "Futahei Blog",
   tagline: "技術ブログ",
@@ -17,7 +20,7 @@ const config: Config = {
   url: "https://futahei.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/docusaurus-blog/",
+  baseUrl: isVercelPreview ? "/" : `/${repo}/`,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
