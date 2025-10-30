@@ -1,36 +1,26 @@
-name: Preview (PR)
+name: PR Preview
 on:
   pull_request:
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+    types: [opened, reopened, synchronize, closed]
 
 concurrency:
-  group: "pages-preview"
+  group: preview-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  build:
+  preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
+        with: { node-version: 20, cache: "npm" }
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
         with:
-          path: build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      # PRプレビューURLはActionsのRunページとPRのEnvironmentsに表示されます
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          source-dir: ./build

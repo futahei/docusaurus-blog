@@ -1,0 +1,45 @@
+name: Cleanup Vercel Preview on PR Close
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      BRANCH: ${{ github.head_ref }}
+    steps:
+      - name: List preview deployments for this branch
+        id: list
+        run: |
+          # 直近のプレビューをブランチ名でフィルタ（必要に応じて since/until を追加）
+          curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v13/deployments?projectId=$VERCEL_PROJECT_ID&state=READY&target=preview&limit=50" \
+            > deployments.json
+
+          # 該当ブランチのデプロイURL/IDを抽出
+          node -e "
+          const fs=require('fs');const d=JSON.parse(fs.readFileSync('deployments.json','utf8'));
+          const list=d.deployments?.filter(x=>x.meta?.githubCommitRef===process.env.BRANCH) || [];
+          if(!list.length){console.log('::notice::No preview deployments for this branch');process.exit(0)}
+          fs.writeFileSync('to-delete.json', JSON.stringify(list.map(x=>({id:x.uid,url:x.url}))));
+          console.log('Found', list.length, 'deployments');
+          "
+
+      - name: Delete deployments
+        if: success()
+        run: |
+          if [ ! -f to-delete.json ]; then exit 0; fi
+          node -e "
+          const fs=require('fs');const list=JSON.parse(fs.readFileSync('to-delete.json','utf8'));
+          const token=process.env.VERCEL_TOKEN;
+          const fetch=global.fetch || (await import('node-fetch')).default;
+          const del=async id=>{
+            const r=await fetch(`https://api.vercel.com/v13/deployments/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${token}`}});
+            console.log('DELETE', id, r.status);
+          };
+          (async()=>{for(const i of list){await del(i.id)}})();
+          "
