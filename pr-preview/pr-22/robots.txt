@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://futahei.github.io/docusaurus-blog/sitemap.xml
