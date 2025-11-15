@@ -105,6 +105,12 @@ const tagAgent = new Agent({
 export async function generateTagsWithAI(
   input: GenerateTagsInput
 ): Promise<string[]> {
+  const isDev = process.env.NODE_ENV !== "production";
+  if (isDev) {
+    console.log("Dev mode: skipping AI tag generation");
+    return input.existingTags ?? [];
+  }
+
   const { title, content, existingTags = [] } = input;
 
   // 既存タグがあればそれもプロンプトに含めつつ、重複しないようにしてもらう
@@ -119,10 +125,12 @@ export async function generateTagsWithAI(
 タイトル:
 ${title ?? "(タイトルなし)"}
 
-${existingText}
-
 本文:
 ${content}
+
+既存タグ
+${existingText}
+
   `.trim();
 
   try {
@@ -188,6 +196,8 @@ function normalizeTags(rawTags: string[]): string[] {
 - 重複や表記揺れを除去する
 
 というロジックを入れています。
+
+また、開発環境では AI 呼び出しをスキップして既存タグをそのまま返すようにしています。これでビルド時間の無駄遣いと API コストの浪費を防げます。
 
 ### 4. Docusaurus フックに組み込む
 

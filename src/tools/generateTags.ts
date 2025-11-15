@@ -20,6 +20,12 @@ const tagAgent = new Agent({
 export async function generateTagsWithAI(
   input: GenerateTagsInput
 ): Promise<string[]> {
+  const isDev = process.env.NODE_ENV !== "production";
+  if (isDev) {
+    console.log("Dev mode: skipping AI tag generation");
+    return input.existingTags ?? [];
+  }
+
   const { title, content, existingTags = [] } = input;
 
   // 既存タグがあればそれもプロンプトに含めつつ、重複しないようにしてもらう
@@ -34,10 +40,12 @@ export async function generateTagsWithAI(
 タイトル:
 ${title ?? "(タイトルなし)"}
 
-${existingText}
-
 本文:
 ${content}
+
+既存タグ
+${existingText}
+
   `.trim();
 
   try {
