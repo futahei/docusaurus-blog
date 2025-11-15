@@ -43,7 +43,7 @@ ${title ?? "(タイトルなし)"}
 本文:
 ${content}
 
-既存タグ
+既存タグ:
 ${existingText}
 
   `.trim();
