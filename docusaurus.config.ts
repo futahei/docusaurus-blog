@@ -1,6 +1,8 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 
+import { generateTagsWithAI } from "./src/tools/generateTags";
+
 const repo = "docusaurus-blog";
 const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
@@ -9,7 +11,6 @@ const config: Config = {
   tagline: "技術ブログ",
   favicon: "img/favicon.ico",
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true,
   },
@@ -98,6 +99,54 @@ const config: Config = {
       { label: "LinkedIn", href: "https://www.linkedin.com/in/futahei/" },
     ],
   },
+
+  markdown: {
+    parseFrontMatter: async (params) => {
+      const result = await params.defaultParseFrontMatter(params);
+
+      const frontMatter = result.frontMatter as {
+        title?: string;
+        tags?: string[] | string;
+        [key: string]: unknown;
+      };
+
+      const { filePath, fileContent } = params;
+
+      // blog のみタグ自動生成を行う
+      const normalizedFilePath = filePath.replace(/\\/g, "/");
+      if (!normalizedFilePath.includes("/blog/")) {
+        return result;
+      }
+
+      // AI でタグ生成
+      const existingTags = normalizeTags(frontMatter.tags);
+      try {
+        const aiTags = await generateTagsWithAI({
+          title: frontMatter.title,
+          content: fileContent,
+          existingTags,
+        });
+
+        if (aiTags.length > 0) {
+          result.frontMatter.tags = aiTags;
+        }
+      } catch (e) {
+        console.warn("AI tag generation failed", e);
+      }
+
+      return result;
+    },
+  },
 };
 
 export default config;
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
+
+function normalizeTags(tags: unknown): string[] {
+  if (!tags) return [];
+  if (Array.isArray(tags)) return tags.map(String);
+  return [String(tags)];
+}
