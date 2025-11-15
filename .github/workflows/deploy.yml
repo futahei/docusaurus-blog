@@ -22,6 +22,8 @@ jobs:
         with: { node-version: 20, cache: "npm" }
       - run: npm ci
       - run: npm run build
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with: { path: build }
 
